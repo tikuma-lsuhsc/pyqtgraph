@@ -6,6 +6,7 @@ Demonstrates a way to put multiple axes around a single plot.
 
 
 import pyqtgraph as pg
+from PyQt6 import QtWidgets
 
 app = pg.mkQApp("Arrow Example")
 
@@ -15,6 +16,8 @@ view.setCentralItem(l)
 view.show()
 view.setWindowTitle('pyqtgraph example: GraphicsLayout')
 view.resize(800,600)
+
+l.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding))
 
 p00 = l.addPlot(row=0, col=0)
 p01 = l.addPlot(row=0,col=1,title='top right')
@@ -34,7 +37,7 @@ print(p01.margins())
 print(p10.margins())
 print(p11.margins())
 
-l.alignPlotAxes()
+# l.alignPlotAxes()
 
 # pg.PlotItem
 

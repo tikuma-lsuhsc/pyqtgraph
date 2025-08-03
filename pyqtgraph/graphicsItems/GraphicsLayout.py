@@ -30,7 +30,8 @@ class GraphicsLayout(GraphicsWidget):
         self.itemBorders = {}  ## {item1: QtWidgets.QGraphicsRectItem, ...} border rects
         self.currentRow = 0
         self.currentCol = 0
-        self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding))
+        
+        # self.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding))
     
     #def resizeEvent(self, ev):
         #ret = GraphicsWidget.resizeEvent(self, ev)
