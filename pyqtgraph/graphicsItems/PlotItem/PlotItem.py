@@ -1643,3 +1643,42 @@ class PlotItem(GraphicsWidget):
         self.fileDialog.setAcceptMode(QtWidgets.QFileDialog.AcceptMode.AcceptSave)
         self.fileDialog.show()
         self.fileDialog.fileSelected.connect(handler)
+
+    def margins(self) -> list[float, float, float, float]:
+        return self._margins(self.layout,'geometry')
+    def tightMargins(self) -> list[float, float, float, float]:
+        return self._margins(self.layout,'boundingRect')
+
+    @staticmethod
+    def _margins(layout,rect) -> list[float, float, float, float]:
+
+        nrows = layout.rowCount()
+        ncols = layout.columnCount()
+
+        row_heights = np.zeros(nrows)
+        col_widths = np.zeros(ncols)
+
+        for row in range(nrows):
+            for col in range(ncols):
+                item = layout.itemAt(row, col)
+
+                if item is None or not item.isVisible():
+                    continue
+
+                r = getattr(item,rect)()
+
+                if isinstance(item, AxisItem):
+                    if item.orientation in ("left", "right"):
+                        col_widths[col] = max(col_widths[col], r.width())
+                    else:
+                        row_heights[row] = max(row_heights[row], r.height())
+                elif isinstance(item, LabelItem):
+                    col_widths[col] = max(col_widths[col], r.width())
+                    row_heights[row] = max(row_heights[row], r.height())
+
+        return [
+            col_widths[0] if ncols else 0.,
+            row_heights[:2].sum() if nrows else 0.,
+            col_widths[2:].sum() if ncols else 0.,
+            row_heights[3:].sum() if nrows else 0.,
+        ]

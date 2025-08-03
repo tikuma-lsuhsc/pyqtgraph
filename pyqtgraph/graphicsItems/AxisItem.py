@@ -144,7 +144,14 @@ class AxisItem(GraphicsWidget):
 
         self.grid = False
 
-        #self.setCacheMode(self.DeviceCoordinateCache)
+        # self.setCacheMode(self.DeviceCoordinateCache)
+        
+        self.setSizePolicy(
+            QtWidgets.QSizePolicy(
+                QtWidgets.QSizePolicy.Policy.Expanding,
+                QtWidgets.QSizePolicy.Policy.MinimumExpanding,
+            )
+        )
 
     def setStyle(self, **kwargs):
         """

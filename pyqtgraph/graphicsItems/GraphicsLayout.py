@@ -1,3 +1,5 @@
+import numpy as np
+
 from .. import functions as fn
 from ..Qt import QtCore, QtWidgets
 from .GraphicsWidget import GraphicsWidget
@@ -224,3 +226,32 @@ class GraphicsLayout(GraphicsWidget):
 
         r = item.mapRectToParent(item.boundingRect())
         self.itemBorders[item].setRect(r)
+
+    def alignPlotAxes(self):
+
+        layout: QtWidgets.QGraphicsGridLayout = self.layout
+        nrows = layout.rowCount()
+        ncols = layout.columnCount()
+        row_heights = np.zeros((nrows,2))
+        col_widths = np.zeros((ncols,2))
+        plot_items = {}
+
+        for row in range(nrows):
+            for col in range(ncols):
+                item = layout.itemAt(row, col)
+
+                if item is None or not item.isVisible() or not isinstance(item, PlotItem):
+                    continue
+
+                plot_items[(row,col)] = item
+
+                m = item.tightMargins()
+                col_widths[col] = (m[0],m[2])
+                row_heights[row] = (m[1],m[3])
+
+        col_widths = col_widths.max(axis=-1)
+        row_heights = row_heights.max(axis=-1)
+
+        for (row,col),item in plot_items.items():
+            item.axes
+            
